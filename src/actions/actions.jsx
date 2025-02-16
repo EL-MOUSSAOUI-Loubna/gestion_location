@@ -30,3 +30,22 @@ export const fetchCities = (dispatch) => {
             console.error("Error fetching cities:", error);
           });
 }
+
+export const fetchpositions = (dispatch) => {
+    const apiUrl = "https://countriesnow.space/api/v0.1/countries/positions";
+        const requestBody = {
+          "iso2": "MAR",
+        };
+
+        axios
+          .post(apiUrl, requestBody)
+          .then((response) => {
+            dispatch ({ type: 'FETCH_CITIES', payload: response.data.data }) ;
+
+          })
+          .catch((error) => {
+            // Handle errors
+            console.error("Error fetching cities:", error);
+          });
+}
+

@@ -4,6 +4,7 @@ import { FETCH_COUNTRIES } from '../actions/actionType.jsx';
 const initialState = {
     countries: [],
     cities: [],
+    position : [31.622843095562477,-7.990010217743958],
 };
 
 const reducer = (state = initialState, action) => {
