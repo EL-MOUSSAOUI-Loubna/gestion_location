@@ -1,24 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCountries, fetchCities } from '../actions/actions';
+import {  fetchCities } from '../actions/actions';
 
 const SignUp = () => {
  
-    const countries = useSelector(state => state.countries || []);
+    //const countries = useSelector(state => state.countries || []);
+    const cities = useSelector(state => state.cities || []);
     const dispatch = useDispatch();
 
     const [Firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
     const [email, setEmail] = useState('');
-    const [country, setCountry] = useState('');
+    //const [country, setCountry] = useState('');
     const [city, setCity] = useState("");
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const cities = useSelector(state => state.cities || []);
 
-    useEffect(() => {
+    /*useEffect(() => {
         dispatch (fetchCountries) 
-    }, [dispatch]);
+    }, [dispatch]);*/
 
     useEffect(() => {
         dispatch(fetchCities);

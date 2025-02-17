@@ -1,25 +1,30 @@
-import { FETCH_COUNTRIES } from '../actions/actionType.jsx';
+import {  FETCH_CITIES, ADD_RENT } from '../actions/actionType.jsx';
 
 
 const initialState = {
-    countries: [],
     cities: [],
-    position : [31.622843095562477,-7.990010217743958],
+    announces: [],
 };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case FETCH_COUNTRIES:
+        /*case FETCH_COUNTRIES:
             return {
                 ...state,
                 countries: action.payload,
-            };
+            };*/
 
-            case 'FETCH_CITIES':
+            case FETCH_CITIES:
                 return {
                     ...state,
                     cities: action.payload,
                 };
+
+            case ADD_RENT :
+                return {
+                    ...state,
+                    announces: [...state.announces, action.payload]
+                }
 
         default:
             return state;

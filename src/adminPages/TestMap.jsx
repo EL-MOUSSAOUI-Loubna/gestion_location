@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const TestMap = ({ cityName }) => {
+const TestMap = ({ cityName, setSelectedPosition }) => {
   const [position, setPosition] = useState([31.7917, -7.0926]); // Default: Morocco
   const [marker, setMarker] = useState(null);
   const [zoom, setZoom] = useState(6); // Default zoom
@@ -28,7 +28,7 @@ const TestMap = ({ cityName }) => {
     }
   };
 
-  // 🎯 Fetch city position when `cityName` prop changes
+  // 🎯 Fetch city position when cityName changes
   useEffect(() => {
     if (cityName) {
       fetchCityCoordinates(cityName);
@@ -46,6 +46,7 @@ const TestMap = ({ cityName }) => {
         setMarker([lat, lng]);
         setZoom(20); // Zoom in when a location is clicked
         map.setView([lat, lng], 20);
+        setSelectedPosition([lat, lng]); // Update selected position
       },
     });
 

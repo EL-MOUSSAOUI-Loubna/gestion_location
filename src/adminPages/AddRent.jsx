@@ -1,13 +1,17 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchCities } from '../actions/actions';
+import { fetchCities, addRent } from '../actions/actions';
 import TestMap from './TestMap';
+import { useNavigate } from 'react-router-dom';
+import Home from './Home';
 
 
 export default function AddRent() {
     const dispatch = useDispatch();
     const cities = useSelector(state => state.cities || []);
+    const announces = useSelector(state => state.announces || []);
+    console.log("Cities from Redux:", cities);
 
 
     const [isOpen, setIsOpen] = useState(false);
@@ -17,23 +21,40 @@ export default function AddRent() {
     const [price, setPrice] = useState('');
     const [city, setCity] = useState('');
     const [photos, setPhotos] = useState([]);
-    
+    const [selectedPosition, setSelectedPosition] = useState(null);
 
-    
+
+
 
     //const openModal = () => setIsOpen(true);
     const closeModal = () => setIsOpen(false);
 
     useEffect(() => {
-        dispatch(fetchCities);
-    }, []);
+        if (!cities || cities.length === 0) {
+            dispatch(fetchCities());  // Ensure fetchCities() is defined in actions
+        }
+    }, [cities]);
+    
 
 
-
+    const convertToBase64 = (photo) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(photo);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    };
     const handleFileChange = (e) => {
         const uploadedPhotos = Array.from(e.target.files);
-        const uploadedPhotosUrl = uploadedPhotos.map(photo => URL.createObjectURL(photo));
-        setPhotos(prevPhotosUrl => [...prevPhotosUrl, ...uploadedPhotosUrl]);
+        Promise.all(uploadedPhotos.map(convertToBase64))
+            .then(base64Images => {
+                setPhotos(prevPhotos => [...prevPhotos, ...base64Images]);
+            })
+            .catch(error => console.error("Error converting image:", error));
+
+        //const uploadedPhotosUrl = uploadedPhotos.map(photo => URL.createObjectURL(photo));
+        //setPhotos(prevPhotosUrl => [...prevPhotosUrl, ...uploadedPhotosUrl]);
     };
 
     const handleDragOver = (e) => {
@@ -50,8 +71,15 @@ export default function AddRent() {
         setIsDragging(false);
 
         const droppedPhotos = Array.from(e.dataTransfer.files);    //array.from to transform the file list to an array
-        const droppedPhotosUrl = droppedPhotos.map(photo => URL.createObjectURL(photo));     //createobjecturl expects just one value and not and array
-        setPhotos(prevPhotosUrl => [...prevPhotosUrl, ...droppedPhotosUrl]);
+
+        Promise.all(droppedPhotos.map(convertToBase64))
+        .then(base64Images => {
+            setPhotos(prevPhotos => [...prevPhotos, ...base64Images]);
+        })
+        .catch(error => console.error("Error converting image:", error));
+
+        //const droppedPhotosUrl = droppedPhotos.map(photo => URL.createObjectURL(photo));     //createobjecturl expects just one value and not and array
+        //setPhotos(prevPhotosUrl => [...prevPhotosUrl, ...droppedPhotosUrl]);
     }
 
     const handleRemovePhoto = (index) => {
@@ -60,32 +88,22 @@ export default function AddRent() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const newRent = { title, description, price, city, photos, selectedPosition };
+        dispatch(addRent(newRent));
+        alert('Rent added successfully!');
+        console.log("Current localStorage size:", JSON.stringify(localStorage).length / 1024, "KB");
+
+        
     }
 
 
     return (
-        <div>
-            {/* MODEL BUTTON */}
-            <button
-                onClick={() => { setIsOpen(true) }}
-                className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600"
-            >
-                Add rent
-            </button>
-
-            {/* MODEL CONTENT */}
-            {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 ">
-                    <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-[1200px] p-10 max-h-[85vh] overflow-y-auto">
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-3xl underline font-bold w-[95%] text-center text-green-700">Add a house to rent</h2>
-                            <button
-                                onClick={closeModal}
-                                className="text-gray-500 hover:text-gray-700 text-lg w-[5%]"
-                            >
-                                X
-                            </button>
-                        </div>
+        
+            
+            
+                
+                    <div  >
+                        <h1 className='text-2xl text-green-700 font-bold text-center underline'>Add a house to rent</h1>
 
                         <div className="mb-4 mt-10">
                             <form onSubmit={handleSubmit}>
@@ -99,7 +117,7 @@ export default function AddRent() {
                                                 id='city'
                                                 className="px-2 py-3 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
                                                 onChange={(e) => setCity(e.target.value)}
-                                                >
+                                            >
                                                 <option>-- Select a city --</option>
                                                 {cities.map((city, index) => (
                                                     <option key={index} value={city}>
@@ -109,7 +127,7 @@ export default function AddRent() {
                                             </select>
                                         </div>
                                         <div className='h-[350px]'>
-                                            {<TestMap cityName={city} />}
+                                            {<TestMap cityName={city} setSelectedPosition={setSelectedPosition} />}
                                         </div>
                                     </div>
 
@@ -147,57 +165,57 @@ export default function AddRent() {
                                             />
                                         </div>
                                         {/* UPLAOD PHOTOS */}
-                                    <div className="w-full">
-                                        <label className="block text-sm font-medium text-gray-700">
-                                            Upload Photos
-                                        </label>
-                                        <div
-                                            className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 ${isDragging ? 'border-sky-500' : 'border-dashed border-gray-300'
-                                                } rounded-md`}
-                                            onDragOver={handleDragOver}
-                                            onDragLeave={handleDragLeave}
-                                            onDrop={handleDrop}
-                                        >
-                                            <div className="space-y-1 text-center">
-                                                <svg
-                                                    className="mx-auto h-12 w-12 text-gray-400"
-                                                    stroke="currentColor"
-                                                    fill="none"
-                                                    viewBox="0 0 48 48"
-                                                    aria-hidden="true"
-                                                >
-                                                    <path
-                                                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                                        strokeWidth="2"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                    />
-                                                </svg>
-                                                <div className="flex text-sm text-gray-600">
-                                                    <label
-                                                        htmlFor="upload_photos"
-                                                        className="relative cursor-pointer bg-white rounded-md font-medium text-sky-600 hover:text-sky-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-sky-500"
+                                        <div className="w-full">
+                                            <label className="block text-sm font-medium text-gray-700">
+                                                Upload Photos
+                                            </label>
+                                            <div
+                                                className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 ${isDragging ? 'border-sky-500' : 'border-dashed border-gray-300'
+                                                    } rounded-md`}
+                                                onDragOver={handleDragOver}
+                                                onDragLeave={handleDragLeave}
+                                                onDrop={handleDrop}
+                                            >
+                                                <div className="space-y-1 text-center">
+                                                    <svg
+                                                        className="mx-auto h-12 w-12 text-gray-400"
+                                                        stroke="currentColor"
+                                                        fill="none"
+                                                        viewBox="0 0 48 48"
+                                                        aria-hidden="true"
                                                     >
-                                                        <span>Upload a photo </span>
-                                                        <input
-                                                            id="upload_photos"
-                                                            name="photos"
-                                                            type="file"
-                                                            accept="image/*"
-                                                            className="sr-only"
-                                                            onChange={handleFileChange}
-                                                            multiple // Allow multiple files
+                                                        <path
+                                                            d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                                            strokeWidth="2"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
                                                         />
-                                                    </label>
-                                                    <p className="pl-1"> &nbsp; or drag and drop</p>
+                                                    </svg>
+                                                    <div className="flex text-sm text-gray-600">
+                                                        <label
+                                                            htmlFor="upload_photos"
+                                                            className="relative cursor-pointer bg-white rounded-md font-medium text-sky-600 hover:text-sky-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-sky-500"
+                                                        >
+                                                            <span>Upload a photo </span>
+                                                            <input
+                                                                id="upload_photos"
+                                                                name="photos"
+                                                                type="file"
+                                                                accept="image/*"
+                                                                className="sr-only"
+                                                                onChange={handleFileChange}
+                                                                multiple // Allow multiple files
+                                                            />
+                                                        </label>
+                                                        <p className="pl-1"> &nbsp; or drag and drop</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    </div>
                                 </div>
 
-                                
+
                                 {/* DISPLAY SELECTED PHOTOS */}
                                 <div className='mt-6'>
                                     {photos.length > 0 && (
@@ -229,29 +247,28 @@ export default function AddRent() {
                                         </div>
                                     )}
                                 </div>
-                                
 
+                                <div className="mt-2 flex justify-end">
+                                    <input
+                                        type='submit'
+                                        value='save'
+                                        className="mr-3 px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                    />
+
+                                    <button
+                                        onClick={closeModal}
+                                        className="px-5 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                                    >Cancel</button>
+                                </div>
 
                             </form>
                         </div>
 
-                        <div className="flex justify-end">
-                            <button
-                            type='submit'
-                                className="mr-3 px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                            >Save</button>
-                            
-                            <button
-                                onClick={closeModal}
-                                className="px-5 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-                            >Cancel</button>
 
-                            
-                        </div>
                     </div>
-                </div>
-            )}
-        </div>
+                
+            
+        
     );
 }
 
