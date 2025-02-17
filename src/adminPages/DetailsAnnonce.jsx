@@ -10,6 +10,8 @@ const ProductDetails = () => {
   const images = annonce.photos;
   const position = annonce.selectedPosition;
 
+  const user = 'loubna';
+
   const defaultPosition = [31.7917, -7.0926]; // Default: Morocco
   const zoom = 16;
 
@@ -48,15 +50,28 @@ const ProductDetails = () => {
               </div>
             </div>
           )}
+
+          {
+            user == 'loubna' && <div className="mt-10">
+              <button className="h-12 px-6 font-semibold rounded-lg bg-sky-600 hover:bg-sky-700 text-white shadow">
+                Voir Reservations
+              </button>
+            </div>
+          }
         </div>
 
 
         <div className="md:flex-1 p-6 bg-gray-50 rounded-r-lg md:min-w-[57%]">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900">{annonce.title}</h2>
-            <button className="h-12 px-6 font-semibold rounded-lg bg-orange-600 hover:bg-orange-500 text-white shadow">
-              RESERVER
-            </button>
+            {
+              user == 'loubna' ? <button className="h-12 px-6 font-semibold rounded-lg bg-orange-600 hover:bg-orange-500 text-white shadow">
+                MODIFIER
+              </button> : <button className="h-12 px-6 font-semibold rounded-lg bg-orange-600 hover:bg-orange-500 text-white shadow">
+                RESERVER
+              </button>
+            }
+
           </div>
 
 
