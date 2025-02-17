@@ -14,13 +14,14 @@ import AddRent from './adminPages/AddRent.jsx'
 import TestMap from './adminPages/TestMap.jsx'
 import Dashboard from './adminPages/Dashboard.jsx'
 import Home from './adminPages/Home.jsx'
+import ProductDetails from './adminPages/DetailsAnnonce.jsx'
 
 
 createRoot(document.getElementById('root')).render(
   
     <Provider store= {store}>
       <BrowserRouter>
-        <Home />
+        <ProductDetails />
       </BrowserRouter>
     </Provider>
   
