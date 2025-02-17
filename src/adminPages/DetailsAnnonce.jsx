@@ -1,98 +1,92 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 
 const ProductDetails = () => {
-    const annonces = useSelector(state => state.announces);
-    const annonce = annonces[0];
-    const [currentImage, setCurrentImage] = useState(0);
-    const images = annonce.photos;
-  return (
-    <div className="py-6">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row -mx-4">
-          <div className="md:flex-1 px-4">
-            <div>
-              <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">
-                <img
-                  src={images[currentImage]}
-                  alt={`Product ${currentImage + 1}`}
-                  className="h-full w-full object-cover rounded-lg"
-                />
-              </div>
+  const annonces = useSelector((state) => state.announces);
+  const annonce = annonces[0];
+  const [currentImage, setCurrentImage] = useState(0);
+  const images = annonce.photos;
+  const position = annonce.selectedPosition;
 
-              <div className="flex -mx-2 mb-4">
-                {images.map((image, index) => (
-                  <div key={index} className="flex-1 px-2">
-                    <button
-                      onClick={() => setCurrentImage(index)}
-                      className={`focus:outline-none w-full rounded-lg h-24 md:h-32 bg-gray-100 flex items-center justify-center ${
-                        currentImage === index ? 'ring-2 ring-indigo-300 ring-inset' : ''
+  const defaultPosition = [31.7917, -7.0926]; // Default: Morocco
+  const zoom = 16;
+
+  return (
+    <div className="py-8 px-4 max-w-7xl mx-auto ">
+      <div className="h-[90vh] flex flex-col md:flex-row bg-gray-100 rounded-lg shadow-md">
+
+        <div className="md:flex-1 p-6 bg-white rounded-l-lg">
+          <div className="h-64 md:h-96 w-full rounded-md bg-neutral-500 flex items-center justify-center">
+            <img
+              src={images[currentImage]}
+              alt={`Product ${currentImage + 1}`}
+              className="max-w-full max-h-full object-contain"
+            />
+          </div>
+
+
+          {images.length > 0 && (
+            <div className="mt-4">
+              <h3 className="text-sm font-medium text-gray-700">Photos :</h3>
+              <div className="flex gap-3 overflow-x-auto scrollbar-hide w-full p-2 rounded-lg">
+                {images.map((photo, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImage(index)}
+                    className={`w-20 h-16 md:w-24 md:h-20 rounded-lg overflow-hidden shadow-sm border-2 transition-all duration-300 ease-in-out ${currentImage === index ? "border-orange-400" : "border-gray-300"
                       }`}
-                    >
-                      <img
-                        src={image}
-                        alt={`Thumbnail ${index + 1}`}
-                        className="h-full w-full object-cover rounded-lg"
-                      />
-                    </button>
-                  </div>
+                  >
+                    <img
+                      src={photo}
+                      alt={`Image ${index + 1}`}
+                      className="w-full h-full object-cover rounded-lg hover:opacity-75"
+                    />
+                  </button>
                 ))}
               </div>
             </div>
+          )}
+        </div>
+
+
+        <div className="md:flex-1 p-6 bg-gray-50 rounded-r-lg md:min-w-[57%]">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">{annonce.title}</h2>
+            <button className="h-12 px-6 font-semibold rounded-lg bg-orange-600 hover:bg-orange-500 text-white shadow">
+              RESERVER
+            </button>
           </div>
-          <div className="md:flex-1 px-4">
-            <h2 className="mb-2 leading-tight tracking-tight font-bold text-gray-800 text-2xl md:text-3xl">
-              {annonce.title}
-            </h2>
-            <p className="text-gray-500 text-sm">Located in {annonce.city}</p>
 
-            <div className="flex items-center space-x-4 my-4">
-              <div>
-                <div className="rounded-lg bg-gray-100 flex py-2 px-3">
-                  <span className="text-indigo-400 mr-1 mt-1">$</span>
-                  <span className="font-bold text-indigo-600 text-3xl">{annonce.price}</span>
-                </div>
-              </div>
+
+          <div className="flex items-center space-x-4 mb-4">
+            <div className="bg-gray-100 flex items-center py-2 px-4 rounded-lg shadow-sm">
+              <span className="text-green-600 font-bold text-3xl">{annonce.price}</span>
+              <span className="text-green-500 ml-1">DH / mois</span>
             </div>
+          </div>
 
-            <p className="text-gray-500">{annonce.description}</p>
 
-            <div className="flex py-4 space-x-4">
-              <div className="relative">
-                <div className="text-center left-0 pt-2 right-0 absolute block text-xs uppercase text-gray-400 tracking-wide font-semibold">
-                  Qty
-                </div>
-                <select className="cursor-pointer appearance-none rounded-xl border border-gray-200 pl-4 pr-8 h-14 flex items-end pb-1">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                </select>
+          <p className="text-gray-700 text-sm md:text-base leading-relaxed max-h-[120px] overflow-y-auto">
+            {annonce.description}
+          </p>
 
-                <svg
-                  className="w-5 h-5 text-gray-400 absolute right-0 bottom-0 mb-2 mr-2"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M8 9l4-4 4 4m0 6l-4 4-4-4"
-                  />
-                </svg>
-              </div>
 
-              <button
-                type="button"
-                className="h-14 px-6 py-2 font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white"
-              >
-                Add to Cart
-              </button>
+          <div className="mt-6">
+            <p className="text-gray-500 text-sm mb-2">  In &nbsp;<b className="underline">{annonce.city}</b></p>
+            <div className="h-60 md:h-80 w-full rounded-lg overflow-hidden shadow-md">
+              <MapContainer center={position || defaultPosition} zoom={zoom} style={{ height: "100%", width: "100%" }}>
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                />
+                {position && (
+                  <Marker position={position}>
+                    <Popup>House Location</Popup>
+                  </Marker>
+                )}
+              </MapContainer>
             </div>
           </div>
         </div>
