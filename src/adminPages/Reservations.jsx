@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-const Reservations = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const closeModal = () => setIsOpen(false);
+const Reservations = ({setIsOpen, closeModal}) => {
+    //const [isOpen, setIsOpen] = useState(false);
+    //const closeModal = () => setIsOpen(false);
 
     // Static data for reservations
     const reservations = [
@@ -47,18 +47,10 @@ const Reservations = () => {
     };
 
     return (
-        <div>
-            {/* 📌 Modal Button */}
-            <button
-                onClick={() => setIsOpen(true)}
-                className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition-colors"
-            >
-                View Reservations
-            </button>
-
-            {/* 📌 Modal Content */}
-            {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        
+            
+            
+                
                     <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-2/3 xl:w-1/2 px-6 py-8 max-h-[85vh] overflow-y-auto">
                         {/* 🔻 Header */}
                         <div className="flex justify-between items-center mb-6">
@@ -67,9 +59,9 @@ const Reservations = () => {
                             </h2>
                             <button
                                 onClick={closeModal}
-                                className="text-gray-500 hover:text-gray-700 text-2xl"
+                                className="text-gray-500 hover:text-gray-700 text-2xl mr-2"
                             >
-                                ✖
+                                X
                             </button>
                         </div>
 
@@ -115,11 +107,11 @@ const Reservations = () => {
                                 </p>
                             )}
                         </div>
-                    </div>
+                    
                 </div>
-            )}
-        </div>
-    );
+            
+        
+    )
 };
 
 export default Reservations;

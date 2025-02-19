@@ -16,13 +16,14 @@ import Dashboard from './adminPages/Dashboard.jsx'
 import Home from './adminPages/Home.jsx'
 import ProductDetails from './adminPages/DetailsAnnonce.jsx'
 import Reservations from './adminPages/Reservations.jsx'
-
+import ManageAnnonces from './adminPages/ManageAnnonces.jsx'
+import Statistics from './adminPages/HomeAdmin.jsx'
 
 createRoot(document.getElementById('root')).render(
   
     <Provider store= {store}>
       <BrowserRouter>
-        <Reservations />
+        <SignUp />
       </BrowserRouter>
     </Provider>
   

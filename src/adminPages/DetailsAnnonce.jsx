@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import Reservations from "./Reservations";
 
 const ProductDetails = () => {
   const annonces = useSelector((state) => state.announces);
@@ -14,6 +15,19 @@ const ProductDetails = () => {
 
   const defaultPosition = [31.7917, -7.0926]; // Default: Morocco
   const zoom = 16;
+
+  const [isOpen, setIsOpen] = useState(false);
+  const closeModal = () => setIsOpen(false);
+
+  const [unavailableOpen, setUnavailableOpen] = useState(false);
+  //const closeUnavailable = () => setUnavailableOpen(false);
+    //const [unavailableOpen, setIsConfirmOpen] = useState(false);
+  
+    const handleConfirmUn = () => {
+      alert("Item marked as unavailable!");
+      setUnavailableOpen(false);
+      // Add your logic here (API call, Redux update, etc.)
+    };
 
   return (
     <div className="py-8 px-4 max-w-7xl mx-auto ">
@@ -52,11 +66,16 @@ const ProductDetails = () => {
           )}
 
           {
-            user == 'loubna' && <div className="mt-10">
-              <button className="h-12 px-6 font-semibold rounded-lg bg-sky-600 hover:bg-sky-700 text-white shadow">
-                Voir Reservations
+            user == 'loubna' ? <div className="mt-10">
+              <button className="h-12 px-6 mr-4 font-semibold rounded-lg bg-orange-600 hover:bg-orange-500 text-white shadow">
+                MODIFIER
               </button>
-            </div>
+              <button className="h-12 px-6 font-semibold rounded-lg bg-sky-600 hover:bg-sky-700 text-white shadow" onClick={() => setIsOpen(true)}>
+                Voir Reservations
+              </button> 
+            </div> : <button className="h-12 px-6 mt-10 font-semibold rounded-lg bg-orange-600 hover:bg-orange-500 text-white shadow">
+                RESERVER
+              </button>
           }
         </div>
 
@@ -65,10 +84,10 @@ const ProductDetails = () => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900">{annonce.title}</h2>
             {
-              user == 'loubna' ? <button className="h-12 px-6 font-semibold rounded-lg bg-orange-600 hover:bg-orange-500 text-white shadow">
-                MODIFIER
-              </button> : <button className="h-12 px-6 font-semibold rounded-lg bg-orange-600 hover:bg-orange-500 text-white shadow">
-                RESERVER
+              user == 'loubna' && <button 
+              className="h-12 px-3 font-semibold rounded-lg bg-red-600 hover:bg-red-500 text-white shadow"
+              onClick={() => setUnavailableOpen(true)} >
+                mark as unavailable
               </button>
             }
 
@@ -91,7 +110,7 @@ const ProductDetails = () => {
           <div className="mt-6">
             <p className="text-gray-500 text-sm mb-2">  In &nbsp;<b className="underline">{annonce.city}</b></p>
             <div className="h-60 md:h-80 w-full rounded-lg overflow-hidden shadow-md">
-              <MapContainer center={position || defaultPosition} zoom={zoom} style={{ height: "100%", width: "100%" }}>
+              <MapContainer center={position || defaultPosition} zoom={zoom} style={{ height: "100%", width: "100%",  zIndex: 0 }}>
                 <TileLayer
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -106,6 +125,35 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
+      {isOpen && (
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-50">
+          <Reservations setIsOpen={setIsOpen} closeModal={closeModal} />
+          </div>
+        )}
+
+{ unavailableOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white h-[200px] rounded-lg shadow-lg p-6 w-96">
+            <h2 className="text-lg font-semibold text-gray-900 ">Are you sure?</h2>
+            <p className="text-gray-600 mt-4">This action will mark the item as unavailable.</p>
+            
+            <div className="flex justify-end mt-8 gap-3">
+              <button
+                className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg"
+                onClick={() => setUnavailableOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg"
+                onClick={handleConfirmUn}
+              >
+                Yes, Mark Unavailable
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -3,6 +3,11 @@ import { Routes, Route } from 'react-router-dom';
 import AddRent from "./AddRent";
 import Dashboard from "./Dashboard";
 import AllAnnonces from "./AllAnnonces";
+import ProductDetails from "./DetailsAnnonce";
+import ManageAnnonces from "./ManageAnnonces";
+import Statistics from "./HomeAdmin";
+import MyAnnonces from "./MyAnnonces";
+
 
 const Home = () => {
     //const announces = useSelector(state => state.announces);
@@ -15,6 +20,11 @@ const Home = () => {
                     <Routes>
                         <Route path="/all" element={<AllAnnonces />} />
                         <Route path="/add" element={<AddRent />} />
+                        <Route path="/details" element={<ProductDetails />}/>
+                        <Route path="/manage" element={<ManageAnnonces />}/>
+                        <Route path="/statistics" element={<Statistics/>} />
+                        <Route path="/mesannonces" element={<MyAnnonces/>} />
+
                     </Routes>
                 </div>
 

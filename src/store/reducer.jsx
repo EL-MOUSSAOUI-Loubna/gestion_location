@@ -4,6 +4,7 @@ import {  FETCH_CITIES, ADD_RENT } from '../actions/actionType.jsx';
 const initialState = {
     cities: [],
     announces: [],
+    users: [],      // {type: '',id: null, nom: '', prenom: '', email: '', ville: '', password: ''}
 };
 
 const reducer = (state = initialState, action) => {

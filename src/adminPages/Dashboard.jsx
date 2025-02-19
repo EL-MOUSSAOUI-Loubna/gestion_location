@@ -51,14 +51,27 @@ const Dashboard = () => {
                                         to="/add"
                                         className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-orange-400 hover:text-white rounded-md transition duration-150"
                                     >
-                                        Add Annouce
+                                        Add Annonce
                                     </Link>
-                                    <a
-                                        href="#"
+                                    <Link
+                                        to="/manage"
                                         className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-orange-400 hover:text-white rounded-md transition duration-150"
                                     >
-                                        My Annouces
-                                    </a>
+                                        Manage annonces
+                                    </Link>
+                                    <Link
+                                        to="/statistics"
+                                        className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-orange-400 hover:text-white rounded-md transition duration-150"
+                                    >
+                                        Statistics
+                                    </Link>
+                                    <Link
+                                        to="/mesannonces"
+                                        className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-orange-400 hover:text-white rounded-md transition duration-150"
+                                    >
+                                        Mes annonces
+                                    </Link>
+                                    
                                 </div>
                                 <div className="flex flex-col space-y-2">
                                     <a

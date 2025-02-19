@@ -1,4 +1,4 @@
-import { FETCH_CITIES, ADD_RENT} from './actionType.jsx'
+import { FETCH_CITIES, ADD_RENT, SIGNUP_USER} from './actionType.jsx'
 import axios from 'axios';
 
 
@@ -23,6 +23,12 @@ export const fetchCities = () => (dispatch) => {
 export const addRent = (newRent) => {
   return {type: ADD_RENT, payload: newRent};
 }
+
+export const signUp_user = (newUser)=> {
+  return {type: SIGNUP_USER, payload: newUser}
+}
+
+
 
 
 
