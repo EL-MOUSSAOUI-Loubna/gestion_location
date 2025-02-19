@@ -27,7 +27,8 @@ const SignIn = () => {
         const user = users.find(user => user.email === email)
         if (user && user.password === psw) {
             alert('Valid account');
-            navigate('/')
+            const id = user.id
+            navigate(`/${id}`)
         } else {
             setErr('Password or email is incorrect');
         }

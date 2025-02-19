@@ -14,7 +14,7 @@ export default function AddRent() {
     console.log("Cities from Redux:", cities);
 
 
-    const [isOpen, setIsOpen] = useState(false);
+    //const [isOpen, setIsOpen] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -22,12 +22,14 @@ export default function AddRent() {
     const [city, setCity] = useState('');
     const [photos, setPhotos] = useState([]);
     const [selectedPosition, setSelectedPosition] = useState(null);
+    const [errMsg, setErrMsg] = useState('');
+
 
 
 
 
     //const openModal = () => setIsOpen(true);
-    const closeModal = () => setIsOpen(false);
+    //const closeModal = () => setIsOpen(false);
 
     useEffect(() => {
         if (!cities || cities.length === 0) {
@@ -88,10 +90,15 @@ export default function AddRent() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if(city=='' || title=='' || description=='' ||selectedPosition==''){
+            setErrMsg('Please fill in all the fields')
+            return;
+        }
+        setErrMsg('');
         const newRent = { title, description, price, city, photos, selectedPosition };
         dispatch(addRent(newRent));
         alert('Rent added successfully!');
-        console.log("Current localStorage size:", JSON.stringify(localStorage).length / 1024, "KB");
+        //console.log("Current localStorage size:", JSON.stringify(localStorage).length / 1024, "KB");
 
 
     }
@@ -103,16 +110,16 @@ export default function AddRent() {
 
 
         <div  >
-            <h1 className='text-2xl text-green-700 font-bold text-center underline'>Add a house to rent</h1>
-
-            <div className="mb-4 mt-10">
+            <h1 className='text-2xl text-green-700 font-bold text-center underline mb-5'>Add a house to rent</h1>
+            <p className='text-red-500 text-center'><small><b>{errMsg}</b></small></p>
+            <div className="mb-4 mt-4">
                 <form onSubmit={handleSubmit}>
                     <div className='flex flex-col lg:flex-row justify-between lg:gap-20'>
                         {/* ADDRESS PART */}
                         <div className='lg:w-1/2 w-full flex flex-col gap-4'>
                             {/* CITY INPUT */}
                             <div className=''>
-                                <label htmlFor='city' className='block text-sm font-medium text-gray-700'>City</label>
+                                <label htmlFor='city' className='block text-sm font-medium text-gray-700'>City<span className='text-red-500 ml-2'>*</span></label>
                                 <select
                                     id='city'
                                     className="px-2 py-3 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
@@ -126,7 +133,9 @@ export default function AddRent() {
                                     ))}
                                 </select>
                             </div>
-                            <div className='h-[350px]'>
+                            <div className='h-[310px]'>
+                            <label className='block text-sm font-medium text-gray-700 mb-1'>Find your position<span className='text-red-500 ml-2'>*</span></label>
+
                                 {<TestMap cityName={city} setSelectedPosition={setSelectedPosition} />}
                             </div>
                         </div>
@@ -134,17 +143,17 @@ export default function AddRent() {
                         {/* DETAILS PART */}
                         <div className='lg:w-1/2 w-full '>
                             <div className='w-full mb-3'>
-                                <label htmlFor='title' className='block text-sm font-medium text-gray-700'>Title</label>
-                                <input required
+                                <label htmlFor='title' className='block text-sm font-medium text-gray-700'>Title<span className='text-red-500 ml-2'>*</span></label>
+                                <input 
                                     id='title'
                                     type="text"
-                                    placeholder="Give your annouce a title"
+                                    placeholder="Give your annonce a title"
                                     className="px-2 py-3 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
                                     onChange={(e) => setTitle(e.target.value)}
                                 />
                             </div>
                             <div className='w-full mb-3'>
-                                <label htmlFor='description' className='block text-sm font-medium text-gray-700'>Description</label>
+                                <label htmlFor='description' className='block text-sm font-medium text-gray-700'>Description<span className='text-red-500 ml-2'>*</span></label>
                                 <textarea
                                     id='description'
                                     placeholder="Enter a description"
@@ -153,8 +162,8 @@ export default function AddRent() {
                                 ></textarea>
                             </div>
                             <div className='w-full mb-3'>
-                                <label htmlFor='price' className='block text-sm font-medium text-gray-700'>Price</label>
-                                <input required
+                                <label htmlFor='price' className='block text-sm font-medium text-gray-700'>Price<span className='text-red-500 ml-2'>*</span></label>
+                                <input 
                                     id='price'
                                     type="number"
                                     step="0.01"
@@ -251,14 +260,9 @@ export default function AddRent() {
                     <div className="mt-2 flex justify-end">
                         <input
                             type='submit'
-                            value='save'
+                            value='Save'
                             className="mr-3 px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                         />
-
-                        <button
-                            onClick={closeModal}
-                            className="px-5 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-                        >Cancel</button>
                     </div>
 
                 </form>

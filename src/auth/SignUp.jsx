@@ -60,7 +60,7 @@ const SignUp = () => {
         alert('signed up')
         const newUser = { firstname, lastname, email, city, password };
         dispatch(signUp_user(newUser));
-        navigate('/');
+        navigate('/signin');
     }
 
 
