@@ -1,7 +1,8 @@
-import { acceptRes, updateAnn } from '../actions/actions.jsx';
-import { FETCH_CITIES, ADD_RENT, SIGNUP_USER, LOGIN_USER,
+import {
+    FETCH_CITIES, ADD_RENT, SIGNUP_USER, LOGIN_USER,
     DELETE_ANN, RESERVE_ANN, ACCEPT_RES, REJECT_RES, UPDATE_ANN,
-    ACCEPT_ANN, REJECT_ANN } from '../actions/actionType.jsx';
+    ACCEPT_ANN, REJECT_ANN, LOGOUT
+} from '../actions/actionType.jsx';
 
 
 const initialState = {
@@ -16,33 +17,28 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        /*case FETCH_COUNTRIES:
-            return {
-                ...state,
-                countries: action.payload,
-            };*/
 
         case SIGNUP_USER:
             return {
-                ...state, users: [...state.users, {
-                    id: state.users.length + 1,
+                ...state, allUsers: [...state.allUsers, {
+                    id: state.allUsers.length + 1,
                     type: 'user',
                     firstName: action.payload.firstName,
                     lastName: action.payload.lastName,
                     city: action.payload.city,
                     email: action.payload.email,
                     password: action.payload.password,
-                    idAnn:[],
-                    //selectedPosition: []
+                    idAnn: []
                 }]
             }
 
         case LOGIN_USER:
-            const user = allUsers.find(user => user.id === action.payload);
+            const user = state.allUsers.find(user => user.id === action.payload);
             return {
-                ...state, 
-                loggedInUser:  [
-                    {id: action.playload,
+                ...state,
+                loggedInUser:
+                {
+                    id: action.payload,
                     ...user
                     /*type: user.type,
                     firstName: user.firstName,
@@ -50,9 +46,8 @@ const reducer = (state = initialState, action) => {
                     city: user.city,
                     email: user.email,
                     password: user.password,
-                    idAnn: [],
-                    selectedPosition: []*/
-                }]
+                    idAnn: [] */
+                }
             }
 
         case FETCH_CITIES:
@@ -64,45 +59,84 @@ const reducer = (state = initialState, action) => {
         case ADD_RENT:
             return {
                 ...state,
-                annonces: [...state.annonces, action.payload]
+                pendingAnnonces: [...state.pendingAnnonces, action.payload]
             }
 
         case DELETE_ANN:
-            return state.annonces.filter(ann=>ann.id == action.payload);
+            return {
+                ...state,
+                annonces:
+                    state.annonces.filter(ann => ann.id !== action.payload)
+            }
 
         case RESERVE_ANN:
             return {
-                ...state, 
-                pendingRes: [ ...state.pendingRes,
-                   { id: state.pendingRes.length+1, 
+                ...state,
+                pendingRes: [...state.pendingRes,
+                {
+                    id: state.pendingRes.length + 1,
                     ...action.payload
                 }]
             }
 
         case ACCEPT_RES:
-            state.pendingRes.filter(res=> res.id == action.payload.idRes)
-            return {...state,
+            state.pendingRes.filter(res => res.id !== action.payload.idRes)
+            return {
+                ...state,
                 acceptedRes: [
                     ...state.acceptedRes,
-                    {...action.payload}
+                    { ...action.payload }
                 ]
-                
+
             }
 
         case REJECT_RES:
-            return state.pendingRes.filter(res=>res.id == action.payload.idRes);
-        
+            return {
+                ...state,
+                pendingRes: state.pendingRes.filter((res) => res.id !== action.payload.idRes
+                )
+            };
+
         case UPDATE_ANN:
-            return
+            const annonceToUpdate = state.annonces.find(ann => ann.id == action.payload.idAnn)
+            if (!annonceToUpdate) {
+                return state;
+            }
+            const updatedAnnonce = {
+                ...annonceToUpdate,
+                title: action.payload.title,
+                description: action.payload.description,
+                price: action.payload.price,
+                city: action.payload.city,
+                photos: action.payload.photos,
+                selectedPosition: action.payload.selectedPosition,
+            };
+            const updatedAnnonces = state.annonces.map((ann) =>
+                ann.id === action.payload.idAnn ? updatedAnnonce : ann
+            );
+            return { ...state, annonces: updatedAnnonces };
 
         case ACCEPT_ANN:
-            state.pendingAnnonces.filter(ann=> ann.id == action.payload)
-            return {...state,
-                acceptedRes: [
-                    ...state.acceptedRes,
-                    {...action.payload}
-                ]
-                
+            const annonce = state.pendingAnnonces.find(ann => ann.id == action.payload);
+            state.pendingAnnonces.filter(ann => ann.id == action.payload)
+            return {
+                ...state,
+                pendingAnnonces: state.pendingAnnonces.filter(
+                    (ann) => ann.id !== action.payload
+                ),
+                annonces: [...state.annonces, acceptedAnnonce],
+            };
+
+        case REJECT_ANN:
+            return { ...state,
+                pendingAnnonces: state.pendingAnnonces.filter(
+                  (ann) => ann.id !== action.payload )
+              };
+
+        case LOGOUT:
+            return {
+                ...state,
+                loggedInUser: {}
             }
 
         default:

@@ -18,6 +18,7 @@ import ProductDetails from './pages/DetailsAnnonce.jsx'
 import Reservations from './pages/Reservations.jsx'
 import ManageAnnonces from './pages/ManageAnnonces.jsx'
 import Statistics from './pages/HomeAdmin.jsx'
+import MapAllAnn from './pages/MapAllAnn.jsx'
 
 createRoot(document.getElementById('root')).render(
   

@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { Link } from 'react-router-dom';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../actions/actions";
 
 const Dashboard = ({ id }) => {
   const [sidenav, setSidenav] = useState(true);
   const user = useSelector(state => state.loggedInUser);
+  const dispatch = useDispatch();
 
-
+  const handleLogout=()=>{
+    dispatch(logout(user.id));
+  }
 
   const handleMenu = () => {
     setSidenav((prev) => !prev);
-
   };
 
   return (
@@ -57,7 +60,7 @@ const Dashboard = ({ id }) => {
                           Statistics
                         </Link>
                         <Link
-                          to= {`/all/${id}`}
+                          to= {`/all`}
                           className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-orange-400 hover:text-white rounded-md transition duration-150"
                         >
                           All Annonces
@@ -74,19 +77,19 @@ const Dashboard = ({ id }) => {
                       :
                       <div>
                         <Link
-                          to= {`/all/${id}`}
+                          to= {`/all`}
                           className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-orange-400 hover:text-white rounded-md transition duration-150"
                         >
                           All Annonces
                         </Link>
                         <Link
-                          to= {`/add/${id}`}
+                          to= {`/add/${user.id}`}
                           className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-orange-400 hover:text-white rounded-md transition duration-150"
                         >
                           Add Annonce
                         </Link>
                         <Link
-                          to= {`/mesannonces/${id}`}
+                          to= {`/mesannonces/${user.id}`}
                           className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-orange-400 hover:text-white rounded-md transition duration-150"
                         >
                           Mes annonces
@@ -102,6 +105,7 @@ const Dashboard = ({ id }) => {
                   <div className="flex flex-col space-y-2">
                     <Link
                       to="/signin"
+                      onClick={handleLogout}
                       className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-orange-400 hover:text-white rounded-md transition duration-150"
                     >
                       Log out

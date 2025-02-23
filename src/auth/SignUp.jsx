@@ -62,9 +62,7 @@ const SignUp = () => {
         }
 
         setErrMsg('')
-        const newUser = { firstName, lastName, email, city, password };
-        //console.log(newUser);
-        
+        const newUser = { firstName, lastName, email, city, password };        
         dispatch(signUp_user(newUser));
         alert('signed up')
         navigate('/signin');

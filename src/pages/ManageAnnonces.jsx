@@ -12,7 +12,7 @@ import ImageIcon from '../assets/image-icon.svg';
 const ManageAnnonces = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const annonces = useSelector((state) => state.annonces);
+  const pendingAnnonces = useSelector((state) => state.pendingAnnonces);
   //const user = useSelector(state=> state.loggedInUser)
   //const idUser = user.id;
   const [confRejectAnnOpen, setConfRejectAnnOpen] = useState(false);
@@ -33,8 +33,8 @@ const ManageAnnonces = () => {
     <div className="max-w-7xl mx-auto ">
       <h1 className='text-2xl text-green-700 mb-4 font-bold text-center underline'>Manage my annonces</h1>
       <div className="flex flex-col md:flex-row gap-5 rounded-lg">
-        {annonces && annonces.length > 0 ? (
-          annonces.map((ann, index) => (
+        {pendingAnnonces && pendingAnnonces.length > 0 ? (
+          pendingAnnonces.map((ann, index) => (
             <div key={index} className="relative group bg-white h-[350px] w-[260px] shadow-md rounded-lg overflow-hidden hover:scale-105 hover:shadow-2xl transition-transform duration-300 ease-out">
               {ann.photos && ann.photos.length > 0 && ann.photos[0] ? (
                 <img
@@ -62,17 +62,19 @@ const ManageAnnonces = () => {
                   </button>
                   <div className="flex justify-center gap-4">
                     <button
-                      className="w-12 h-12 flex items-center justify-center border-2 border-green-600 hover:bg-green-600 rounded-full shadow"
+                      className="w-12 h-12 flex items-center justify-center bg-red-600 hover:bg-white hover:border-2 hover:border-red-600 rounded-full shadow"
                       onClick={() => { setConfRejectAnnOpen(true); setIdAnnToRej(ann.id) }}>
-                      <svg className="w-6 h-6 text-green-600 hover:bg-green-600 bg-transparent hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <svg className="w-6 h-6 text-white hover:text-red-600 hover:bg-transparent"
+                           aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18 17.94 6M18 18 6.06 6" />
                       </svg>
                     </button>
 
                     <button
-                      className="w-12 h-12 flex items-center justify-center bg-red-600 hover:bg-white hover:border-2 hover:border-red-600 rounded-full shadow"
+                      className="w-12 h-12 flex items-center justify-center border-2 border-green-600 hover:bg-green-600 rounded-full shadow"
                       onClick={() => { dispatch(acceptAnn(ann.id)); alert("Annonce accepted") }}>
-                      <svg className="w-6 h-6 text-white hover:text-red-600 hover:bg-transparent" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <svg className="w-6 h-6 text-green-600 hover:bg-green-600 bg-transparent hover:text-white" 
+                          aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 11.917 9.724 16.5 19 7.5" />
                       </svg>
                     </button>
@@ -83,7 +85,7 @@ const ManageAnnonces = () => {
             </div>
           ))
         ) : (
-          <p className="text-center text-gray-500 mt-5">No listings available</p>
+          <p className="text-center text-gray-500 mt-5 w-full">No listings available</p>
         )}
 
 

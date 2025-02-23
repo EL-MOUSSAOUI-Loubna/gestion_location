@@ -10,4 +10,4 @@ export const REJECT_RES = 'REJECT_RES';
 export const UPDATE_ANN = 'UPDATE_ANN';
 export const ACCEPT_ANN = 'ACCEPT_ANN';
 export const REJECT_ANN = 'REJECT_ANN';
-
+export const LOGOUT = 'LOGOUT';

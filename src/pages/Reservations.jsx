@@ -8,7 +8,7 @@ const Reservations = ({ closeModal }) => {
 
 
   const dispatch = useDispatch();
-  const reservations = useSelector(state => state.pendingRes);
+  const penReservations = useSelector(state => state.pendingRes || []);
 
   const handleAccept = (idRes, idAnn, idUser) => {
     const resDone = {idRes, idAnn, idUser};
@@ -40,9 +40,9 @@ const Reservations = ({ closeModal }) => {
       </div>
 
       <div className="mt-6">
-        {reservations.length > 0 ? (
+        {penReservations.length > 0 ? (
           <ul className="space-y-4">
-            {reservations.map((reservation) => (
+            {pendingRes.map((reservation) => (
               <li
                 key={reservation.id}
                 className="p-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow"
@@ -58,7 +58,7 @@ const Reservations = ({ closeModal }) => {
                   </div>
                   <div className="flex space-x-4">
                     <button
-                      onClick={() => handleAccept(reservation.id, reservation.idAnn, idUser)}
+                      onClick={() => handleAccept(reservation.id, reservation.idAnn, reservation.idUser)}
                       className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
                     >
                       Accept

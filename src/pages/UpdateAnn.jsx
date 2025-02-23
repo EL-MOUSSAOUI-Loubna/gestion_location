@@ -1,26 +1,27 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import TestMap from './TestMap';
-import { updateAnn } from "../actions/actions";
+import { updateAnn, fetchCities } from "../actions/actions";
 
 
 const UpdateAnn = () => {
 
 	const { idAnn } = useParams();
 	const navigate = useNavigate();
+	const dispatch= useDispatch();
 
 	const cities = useSelector(state => state.cities);
 	const annonces = useSelector(state => state.annonces);
 	const annonce = annonces.find(ann => ann.id == idAnn);
 
-	const [photos, setPhotos] = useState(annonce.photos);
+	const [photos, setPhotos] = useState(annonce.photos || []);
 	const [isDragging, setIsDragging] = useState(false);
-	const [title, setTitle] = useState('');
-	const [description, setDescription] = useState('');
-	const [price, setPrice] = useState('');
-	const [city, setCity] = useState(annonce.city);
-	const [selectedPosition, setSelectedPosition] = useState(null);
+	const [title, setTitle] = useState(annonce.title || '');
+	const [description, setDescription] = useState(annonce.description || '');
+	const [price, setPrice] = useState(annonce.price || '');
+	const [city, setCity] = useState(annonce.city || '');
+	const [selectedPosition, setSelectedPosition] = useState(annonce.selectedPosition || null);
 	const [errMsg, setErrMsg] = useState('');
 
 
@@ -83,9 +84,10 @@ const UpdateAnn = () => {
 			return;
 		}
 		setErrMsg('');
-		const updatedAnn = { title, description, price, city, photos, selectedPosition };
+		const updatedAnn = { idAnn, title, description, price, city, photos, selectedPosition };
 		dispatch(updateAnn(updatedAnn));
 		alert('Ann updated successfully!');
+		navigate(`/details/${idAnn}`);
 	}
 
 	return (
@@ -257,12 +259,7 @@ const UpdateAnn = () => {
 
 				</form>
 			</div>
-
-
 		</div>
-
-
-
 	);
 }
 export default UpdateAnn;

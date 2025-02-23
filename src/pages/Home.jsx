@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Routes, Route, useParams } from 'react-router-dom';
+import { Routes, Route, useParams, Navigate } from 'react-router-dom';
 import AddRent from "./AddRent";
 import Dashboard from "./Dashboard";
 import AllAnnonces from "./AllAnnonces";
@@ -8,17 +8,17 @@ import ManageAnnonces from "./ManageAnnonces";
 import Statistics from "./HomeAdmin";
 import MyAnnonces from "./MyAnnonces";
 import UpdateAnn from "./UpdateAnn";
-import SignUp from "../auth/SignUp";
-import SignIn from "../auth/SignIn";
 
 
 const Home = () => {
-    //const announces = useSelector(state => state.announces);
-    //const isLoggedIn = useSelector(state => state.loggedInUser);
-    const users = useSelector(state => state.users);
-    const userId = useParams();
-    const user = users.find(user => user.id == userId)
-    const id = user.id;
+    const isLoggedInUser = useSelector(state => state.loggedInUser);
+    //const users = useSelector(state => state.users);
+    const {userId} = useParams();
+
+    if (!isLoggedInUser || isLoggedInUser.id !== parseInt(userId)) {
+        return <Navigate to="/signin" replace />;
+    }
+    const id = isLoggedInUser.id;
 
     return (
         <div>
@@ -33,7 +33,7 @@ const Home = () => {
                             <Route path="/manage" element={<ManageAnnonces />} />
                             <Route path="/statistics" element={<Statistics />} />
                             <Route path="/mesannonces" element={<MyAnnonces />} />
-                            <Route path="/update/:indexAnn" element={<UpdateAnn />} />
+                            <Route path="/update/:idAnn" element={<UpdateAnn />} />
 
                         </Routes>
                     </div>

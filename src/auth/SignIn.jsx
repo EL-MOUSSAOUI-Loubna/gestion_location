@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
+import { logInUser } from '../actions/actions';
 
 const SignIn = () => {
     const users = useSelector(state => state.allUsers);
@@ -13,9 +14,11 @@ const SignIn = () => {
 
     const verifyEmail = (e) => {
         setEmail(e.target.value)
+        setErr('');
     }
     const verifyPassword = (e) => {
         setPsw(e.target.value);
+        setErr('')
     }
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -30,7 +33,7 @@ const SignIn = () => {
             alert('Valid account');
             const id = user.id;
             dispatch(logInUser(id));
-            navigate(`/all`)
+            navigate(`/home/${id}`);
         } else {
             setErr('Password or email is incorrect');
         }   

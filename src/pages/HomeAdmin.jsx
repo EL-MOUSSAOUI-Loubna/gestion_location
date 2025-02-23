@@ -2,9 +2,7 @@ import { useSelector } from "react-redux";
 
 const Statistics = () => {
     const annonces = useSelector(state=> state.annonces);
-    const revenues_all = annonces.map(ann=> {
-        ann.price*5/100;
-    })
+    const revenues_all = annonces.map(ann=> ann.price*5/100)
     const revenue = revenues_all.reduce((sum, price)=> sum+price,0);
 
     return (
@@ -26,7 +24,7 @@ const Statistics = () => {
                         </div>
                         <div className="p-4 sm:w-1/2 w-2/2">
                             <div className="bg-stone-500 rounded-lg p-2 xl:p-6">
-                                <h2 className="title-font font-medium sm:text-4xl text-3xl text-white">{revenue}</h2>
+                                <h2 className="title-font font-medium sm:text-4xl text-3xl text-white">{revenue.toFixed(2)}</h2>
                                 <p className="leading-relaxed text-gray-100 font-bold">Revenues</p>
                             </div>
                         </div>

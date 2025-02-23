@@ -11,7 +11,6 @@ const ProductDetails = () => {
   const navigate = useNavigate();
   const { idAnn } = useParams();
   const userLogged = useSelector(state => state.loggedInUser);
-  //const users = useSelector(state=> state.allUsers);
   const annonces = useSelector((state) => state.annonces);
   const annonce = annonces.find(ann => ann.id == idAnn);
 
@@ -20,9 +19,18 @@ const ProductDetails = () => {
 
   const idAnnOfUser = userLogged.idAnn.find(ann => ann.idAnn == idAnn);
 
+  if (!annonce) {
+    return (
+      <div className="py-8 px-4 max-w-7xl mx-auto">
+        <div className="h-[90vh] flex items-center justify-center bg-gray-100 rounded-lg shadow-md">
+          <p className="text-2xl font-bold text-gray-700">Announcement not found!</p>
+        </div>
+      </div>
+    );
+  }
+  
   const images = annonce.photos;
   const position = annonce.selectedPosition;
-  console.log(parseInt(indexAnn))
 
   const defaultPosition = [31.7917, -7.0926]; // Default: Morocco
   const zoom = 16;
@@ -170,7 +178,8 @@ const ProductDetails = () => {
                 onClick={()=> {
                   alert("Annonce marked as unavailable !");
                   setUnavailableOpen(false);
-                  dispatch(deleteAnn(idAnn))}}
+                  dispatch(deleteAnn(idAnn));
+                  navigate("/");}}
               >
                 Yes, Mark Unavailable
               </button>
@@ -197,7 +206,8 @@ const ProductDetails = () => {
                 onClick={()=> {
                   alert("Annonce deleted !");
                   setUnavailableOpen(false);
-                  dispatch(deleteAnn(idAnn))}}
+                  dispatch(deleteAnn(idAnn));
+                  navigate("/");}}
               >
                 Delete
               </button>

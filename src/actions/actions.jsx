@@ -1,6 +1,6 @@
 import { FETCH_CITIES, ADD_RENT, SIGNUP_USER, LOGIN_USER,
   DELETE_ANN, RESERVE_ANN, ACCEPT_RES, REJECT_RES, UPDATE_ANN,
-  ACCEPT_ANN, REJECT_ANN
+  ACCEPT_ANN, REJECT_ANN, LOGOUT
  } from './actionType.jsx'
 import axios from 'axios';
 
@@ -35,7 +35,7 @@ export const addRent = (newRent) => {
   return {type: ADD_RENT, payload: newRent};
 }
 
-export const delete_ann = (idAnn)=>{
+export const deleteAnn = (idAnn)=>{
   return {type: DELETE_ANN, payload: idAnn};
 }
 export const reserveAnn = (newReserve)=>{
@@ -55,11 +55,13 @@ export const updateAnn = (updatedAnn) => {
 export const acceptAnn = (idAnn) => {
   return {type: ACCEPT_ANN, payload: idAnn};
 }
-export const idAnnToRej = (idAnn) => {
+export const rejectAnn = (idAnn) => {
   return {type: REJECT_ANN, payload: idAnn};
 }
 
-
+export const logout = (idUser)=>{
+  return {type: LOGOUT, payload: idUser};
+}
 
 
 
