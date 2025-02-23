@@ -1,10 +1,28 @@
+import { useSelector } from "react-redux";
+import Home from "./pages/Home";
+import SignUp from "./auth/SignUp";
+import SignIn from "./auth/SignIn";
+import { Routes, Route, useNavigate } from "react-router-dom";
+
 export default function App() {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-3xl font-bold text-blue-600">Hello, Tailwind CSS!</h1>
-      <button className="mt-4 px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">
-        Click Me
-      </button>
-    </div>
-  );
+    const isLoggedIn = useSelector(state => state.loggedInUser);
+    const navigate = useNavigate();
+
+    const signupFirst = ()=>{
+        alert('you should sign in first')
+        navigate('/signin');
+    }
+
+    return (
+        <div>
+            <Routes>
+                {isLoggedIn && isLoggedIn.lenght > 0 ?
+                    <Route path="/home/:userId" element={<Home />} />
+                    : signupFirst
+                }
+                <Route path="/" element={<SignUp />} />
+                <Route path='/signin' element={<SignIn />} />
+            </Routes>
+        </div>
+    );
 }

@@ -7,7 +7,6 @@ const TestMap = ({ cityName, setSelectedPosition }) => {
   const [marker, setMarker] = useState(null);
   const [zoom, setZoom] = useState(6); // Default zoom
 
-  // 🔍 Function to get city coordinates from API
   const fetchCityCoordinates = async (city) => {
     try {
       const response = await fetch(
@@ -19,7 +18,7 @@ const TestMap = ({ cityName, setSelectedPosition }) => {
         const { lat, lon } = data[0];
         setPosition([parseFloat(lat), parseFloat(lon)]);
         setMarker([parseFloat(lat), parseFloat(lon)]);
-        setZoom(10); // Zoom in when city is selected
+        setZoom(10); 
       } else {
         alert('City not found!');
       }
@@ -28,14 +27,12 @@ const TestMap = ({ cityName, setSelectedPosition }) => {
     }
   };
 
-  // 🎯 Fetch city position when cityName changes
   useEffect(() => {
     if (cityName) {
       fetchCityCoordinates(cityName);
     }
   }, [cityName]);
 
-  // 🗺 Component to handle map clicks
   function LocationMarker() {
     const map = useMap();
 
@@ -44,9 +41,9 @@ const TestMap = ({ cityName, setSelectedPosition }) => {
         const { lat, lng } = e.latlng;
         setPosition([lat, lng]);
         setMarker([lat, lng]);
-        setZoom(20); // Zoom in when a location is clicked
+        setZoom(20); 
         map.setView([lat, lng], 20);
-        setSelectedPosition([lat, lng]); // Update selected position
+        setSelectedPosition([lat, lng]); 
       },
     });
 
@@ -57,7 +54,6 @@ const TestMap = ({ cityName, setSelectedPosition }) => {
     ) : null;
   }
 
-  // 🎯 Sync map view when position or zoom changes
   function UpdateMapView() {
     const map = useMap();
     useEffect(() => {

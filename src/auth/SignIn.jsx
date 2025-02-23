@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 
 const SignIn = () => {
-    const users = useSelector(state => state.users);
+    const users = useSelector(state => state.allUsers);
     const navigate= useNavigate();
+    const dispatch = useDispatch();
 
     const [email, setEmail] = useState('');
     const [psw, setPsw] = useState('');
@@ -27,12 +28,12 @@ const SignIn = () => {
         const user = users.find(user => user.email === email)
         if (user && user.password === psw) {
             alert('Valid account');
-            const id = user.id
-            navigate(`/${id}`)
+            const id = user.id;
+            dispatch(logInUser(id));
+            navigate(`/all`)
         } else {
             setErr('Password or email is incorrect');
-        }
-               
+        }   
     }
 
 

@@ -12,6 +12,6 @@ const store = createStore(
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 console.log("Loaded Redux State from LocalStorage:", loadedState);
-store.subscribe( () => saveState(store.getState()) );
+store.subscribe( () => {console.log('saving state ', store.getState()); saveState(store.getState())} );
 
 export default store;

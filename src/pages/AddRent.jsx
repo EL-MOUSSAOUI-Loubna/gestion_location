@@ -3,15 +3,16 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCities, addRent } from '../actions/actions';
 import TestMap from './TestMap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Home from './Home';
 
 
 export default function AddRent() {
     const dispatch = useDispatch();
     const cities = useSelector(state => state.cities || []);
-    const announces = useSelector(state => state.announces || []);
-    console.log("Cities from Redux:", cities);
+    //const annonces = useSelector(state => state.annonces || []);
+    const idUser = useParams();
+    //console.log("Cities from Redux:", cities);
 
 
     //const [isOpen, setIsOpen] = useState(false);
@@ -26,14 +27,9 @@ export default function AddRent() {
 
 
 
-
-
-    //const openModal = () => setIsOpen(true);
-    //const closeModal = () => setIsOpen(false);
-
     useEffect(() => {
         if (!cities || cities.length === 0) {
-            dispatch(fetchCities());  // Ensure fetchCities() is defined in actions
+            dispatch(fetchCities());
         }
     }, [cities]);
 
@@ -90,16 +86,14 @@ export default function AddRent() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(city=='' || title=='' || description=='' ||selectedPosition==''){
+        if(city=='' || title=='' || description=='' ||selectedPosition==null || price==''){
             setErrMsg('Please fill in all the fields')
             return;
         }
         setErrMsg('');
-        const newRent = { title, description, price, city, photos, selectedPosition };
+        const newRent = { title, description, price, city, photos, selectedPosition, idUser };
         dispatch(addRent(newRent));
         alert('Rent added successfully!');
-        //console.log("Current localStorage size:", JSON.stringify(localStorage).length / 1024, "KB");
-
 
     }
 
@@ -260,7 +254,7 @@ export default function AddRent() {
                     <div className="mt-2 flex justify-end">
                         <input
                             type='submit'
-                            value='Save'
+                            value='Add'
                             className="mr-3 px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                         />
                     </div>

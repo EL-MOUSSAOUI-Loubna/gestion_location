@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCities } from '../actions/actions';
 import { useNavigate, Link } from 'react-router-dom';
+import { signUp_user } from '../actions/actions';
 
 const SignUp = () => {
 
@@ -9,9 +10,12 @@ const SignUp = () => {
     const cities = useSelector(state => state.cities || []);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    //const users = useSelector(state=> state.users);
+    //console.log(users);
+    
 
-    const [firstname, setFirstname] = useState('');
-    const [lastname, setLastname] = useState('');
+    const [firstName, setFirstname] = useState('');
+    const [lastName, setLastname] = useState('');
     const [email, setEmail] = useState('');
     const [city, setCity] = useState("");
     const [password, setPassword] = useState('');
@@ -30,10 +34,10 @@ const SignUp = () => {
         if (emailRegex.test(e.target.value)) {
             setEmail(e.target.value);
             setErrEmail('')
-            setDisableBtn(true);
+            setDisableBtn(false);
         } else {
             setErrEmail('Incorrect format')
-            setDisableBtn(false);
+            setDisableBtn(true);
             setErrMsg('')
         }
     }
@@ -46,21 +50,25 @@ const SignUp = () => {
             setErrPsw('');
             setDisableBtn(false);
             setErrMsg('')
+            
         }
     }
-
+    
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!nom || !prenom || !email || !ville || !password || !confirmPassword) {
+        if (!firstName || !lastName || !email || !city || !password || !confirmPassword) {
             setErrMsg('Please fill in all the fields')
             return;
         }
 
         setErrMsg('')
-        alert('signed up')
-        const newUser = { firstname, lastname, email, city, password };
+        const newUser = { firstName, lastName, email, city, password };
+        //console.log(newUser);
+        
         dispatch(signUp_user(newUser));
+        alert('signed up')
         navigate('/signin');
+        
     }
 
 
@@ -150,14 +158,14 @@ const SignUp = () => {
                     </div>
 
                     <div className='text-center mt-5'>
-                        <small>Already have an account ? <Link to='/signIn'><b className='text-blue-500'>Sign in !</b></Link></small>
+                        <small>Already have an account ? <Link to='/signin'><b className='text-blue-500'>Sign in !</b></Link></small>
                     </div>
 
                     <input
                         type="submit"
                         value="Sign Up"
                         disabled={disableBtn}
-                        className="flex w-full justify-center rounded-md border border-transparent bg-sky-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2"
+                        className={ disableBtn==false ? "flex w-full justify-center rounded-md border border-transparent bg-sky-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2" : "flex w-full justify-center rounded-md border border-transparent bg-sky-400 py-2 px-4 text-sm font-medium text-white shadow-md hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2" }
                     />
                 </form>
             </div>

@@ -9,21 +9,21 @@ import { BrowserRouter } from 'react-router-dom'
 import 'leaflet/dist/leaflet.css';
 
 import SignIn from './auth/SignIn.jsx'
-import AddRent from './adminPages/AddRent.jsx'
+import AddRent from './pages/AddRent.jsx'
 //import ImageUpload from './userPages/Home.jsx'
-import TestMap from './adminPages/TestMap.jsx'
-import Dashboard from './adminPages/Dashboard.jsx'
-import Home from './adminPages/Home.jsx'
-import ProductDetails from './adminPages/DetailsAnnonce.jsx'
-import Reservations from './adminPages/Reservations.jsx'
-import ManageAnnonces from './adminPages/ManageAnnonces.jsx'
-import Statistics from './adminPages/HomeAdmin.jsx'
+import TestMap from './pages/TestMap.jsx'
+import Dashboard from './pages/Dashboard.jsx'
+import Home from './pages/Home.jsx'
+import ProductDetails from './pages/DetailsAnnonce.jsx'
+import Reservations from './pages/Reservations.jsx'
+import ManageAnnonces from './pages/ManageAnnonces.jsx'
+import Statistics from './pages/HomeAdmin.jsx'
 
 createRoot(document.getElementById('root')).render(
   
     <Provider store= {store}>
       <BrowserRouter>
-        <Home />
+        <App />
       </BrowserRouter>
     </Provider>
   
