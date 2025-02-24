@@ -51,7 +51,7 @@ const Dashboard = ({ id }) => {
 
 
                   {
-                    user.type == 'user' ?
+                    user.type == 'admin' ?
                       <div className="flex flex-col space-y-2">
                         <Link
                           to="/statistics"
