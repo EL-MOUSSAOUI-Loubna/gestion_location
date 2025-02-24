@@ -15,10 +15,9 @@ export const fetchCities = () => (dispatch) => {
           .post(apiUrl, requestBody)
           .then((response) => {
             dispatch ({ type: FETCH_CITIES, payload: response.data.data }) ;
-
+            
           })
           .catch((error) => {
-            // Handle errors
             console.error("Error fetching cities:", error);
           });
 }
@@ -27,7 +26,6 @@ export const logInUser = (id)=>{
   return {type: LOGIN_USER, payload: id}
 }
 export const signUp_user = (newUser)=> {
-  //console.log({type: SIGNUP_USER, payload: newUser});
   return {type: SIGNUP_USER, payload: newUser}
 }
 
@@ -62,19 +60,3 @@ export const rejectAnn = (idAnn) => {
 export const logout = (idUser)=>{
   return {type: LOGOUT, payload: idUser};
 }
-
-
-
-
-
-
-/* export const fetchCountries = (dispatch) => {
-  axios.get('/api/countries')
-      .then(response => {
-          const countryNames = response.data.map(country => country.name);
-          dispatch ({ type: FETCH_COUNTRIES, payload: countryNames }) ;
-      })
-      .catch(error => {
-          console.error('Error fetching the country data:', error);
-      });
-} */

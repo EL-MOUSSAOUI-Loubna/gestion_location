@@ -81,14 +81,13 @@ const reducer = (state = initialState, action) => {
 
         case ACCEPT_RES:
             state.pendingRes.filter(res => res.id !== action.payload.idRes)
-            return {
-                ...state,
-                acceptedRes: [
-                    ...state.acceptedRes,
-                    { ...action.payload }
-                ]
-
-            }
+            const acceptedReservation = state.pendingRes.find(res => res.id === action.payload.idRes);
+            return { ...state,
+                pendingRes: state.pendingRes.filter(
+                  (res) => res.id !== action.payload.idRes ),
+                acceptedRes: [...state.acceptedRes, acceptedReservation],
+              };
+        
 
         case REJECT_RES:
             return {
@@ -117,15 +116,13 @@ const reducer = (state = initialState, action) => {
             return { ...state, annonces: updatedAnnonces };
 
         case ACCEPT_ANN:
-            const annonce = state.pendingAnnonces.find(ann => ann.id == action.payload);
-            state.pendingAnnonces.filter(ann => ann.id == action.payload)
-            return {
-                ...state,
+            const acceptedAnnonce = state.pendingAnnonces.find(ann => ann.id === action.payload
+              );
+            return { ...state,
                 pendingAnnonces: state.pendingAnnonces.filter(
-                    (ann) => ann.id !== action.payload
-                ),
+                  (ann) => ann.id !== action.payload ),
                 annonces: [...state.annonces, acceptedAnnonce],
-            };
+              };
 
         case REJECT_ANN:
             return { ...state,

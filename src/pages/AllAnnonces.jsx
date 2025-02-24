@@ -18,7 +18,12 @@ const AllAnnonces = () => {
     <div>
       <h1 className='text-2xl text-green-700 font-bold text-center underline'>Houses for rent</h1>
       <div className="mb-10 sm:mb-0 mt-10 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-
+{
+          user.type !== 'admin' &&
+          <div className="w-[70%] h-[50%] mb-3">
+            <MapAllAnn />
+          </div>
+        }
         {annonces?.length > 0 ? (
           annonces.map((ann, index) => (
             <div key={index} className="relative group bg-white shadow-md rounded-lg overflow-hidden hover:scale-105 hover:shadow-2xl transition-transform duration-300 ease-out">
@@ -54,12 +59,7 @@ const AllAnnonces = () => {
         ) : (
           <p className="text-center text-gray-500 mt-5">No listings available</p>
         )}
-        {
-          user.type !== 'admin' &&
-          <div>
-            <MapAllAnn />
-          </div>
-        }
+        
 
       </div>
     </div>

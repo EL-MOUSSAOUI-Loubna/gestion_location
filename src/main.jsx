@@ -10,7 +10,6 @@ import 'leaflet/dist/leaflet.css';
 
 import SignIn from './auth/SignIn.jsx'
 import AddRent from './pages/AddRent.jsx'
-//import ImageUpload from './userPages/Home.jsx'
 import TestMap from './pages/TestMap.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import Home from './pages/Home.jsx'

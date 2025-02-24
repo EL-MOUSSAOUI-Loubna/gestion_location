@@ -1,0 +1,12 @@
+J'ai essayé d'utiliser localStorage, mais j'ai eu un problème. Quand j'ajoute des nouvelles keys dans initialState, les données dans localStorage ne changent pas, elles restent toujours avec les premières keys. J'ai essayé de vider le cache de localStorage, mais après çela, la nouvelle data ne s'ajoute plus. J'ai testé plusieurs solutions, mais rien n'a marché. À la fin, j'ai fait un test séparé, mais au lieu d'avoir les données de ce test, j'ai trouvé des données de mon projet de location, et pas complètement. Du coup, je n'ai pas pu vérifier si les fonctionnalités marchent bien.
+
+
+
+________________________________________________________________
+npm install -D tailwindcss@3.4 postcss autoprefixer
+npm install react@18 react-dom@18
+npm install react-router-dom@6
+npx tailwindcss init -p
+npm install axios
+npm install redux react-redux
+________________________________________________________________

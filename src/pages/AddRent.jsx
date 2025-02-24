@@ -207,7 +207,7 @@ export default function AddRent() {
                                                     accept="image/*"
                                                     className="sr-only"
                                                     onChange={handleFileChange}
-                                                    multiple // Allow multiple files
+                                                    multiple 
                                                 />
                                             </label>
                                             <p className="pl-1"> &nbsp; or drag and drop</p>

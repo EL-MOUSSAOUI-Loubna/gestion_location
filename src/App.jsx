@@ -13,11 +13,6 @@ export default function App() {
     const userId = isLoggedIn.id;
     const navigate = useNavigate();
 
-    /*const signupFirst = ()=>{
-        alert('you should sign in first')
-        navigate('/signin');
-    }*/
-
     return (
         <div>
             <Routes>
@@ -25,6 +20,7 @@ export default function App() {
                 <Route path="*" element={<Navigate to={isLoggedIn ? `/home/${userId}` : "/signin"} replace />} />
                 <Route path="/" element={<Navigate to={isLoggedIn ? `/home/${userId}` : "/signin"} replace />} />
                 <Route path='/signin' element={<SignIn />} />
+                <Route path='/signup' element={<SignUp />} />
             </Routes>
         </div>
     );
