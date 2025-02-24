@@ -29,7 +29,8 @@ const SignIn = () => {
         }
         setErr(''); 
         const user = users.find(user => user.email === email)
-        if (user && user.password === psw) {
+        
+        if (user && user.password == psw) {
             alert('Valid account');
             const id = user.id;
             dispatch(logInUser(id));
