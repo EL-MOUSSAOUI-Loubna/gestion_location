@@ -17,7 +17,7 @@ const MapAllAnn = () => {
   const user = useSelector(state => state.loggedInUser);
 
   const [position, setPosition] = useState([31.7917, -7.0926]); // Default: Morocco
-  const [zoom, setZoom] = useState(8); 
+  const [zoom, setZoom] = useState(8);
 
   const fetchCityCoordinates = async (city) => {
     try {
@@ -51,8 +51,9 @@ const MapAllAnn = () => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       <UpdateMapView center={position} zoom={zoom} />
-      {annonces.map(ann => (
-        <Marker key={ann.id} position={[ann.lat, ann.lon]}>
+      {annonces.map((ann, index) => (
+         ann.id ? (
+        <Marker key={ann.id || index} position={[ann.selectedPosition[0], ann.selectedPosition[1]]}>
           <Popup>
             <div>
               <h3>{ann.title}</h3>
@@ -60,8 +61,10 @@ const MapAllAnn = () => {
               <Link to={`/details/${ann.id}`}>Details</Link>
             </div>
           </Popup>
-        </Marker>
-      ))}
+        </Marker> ) : (
+    console.warn("Missing ID for annonce:", ann)
+      ) )
+    )}
     </MapContainer>
   );
 };

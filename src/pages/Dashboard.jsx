@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link,useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../actions/actions";
 
-const Dashboard = ({ id }) => {
+const Dashboard = () => {
   const [sidenav, setSidenav] = useState(true);
   const user = useSelector(state => state.loggedInUser);
   const dispatch = useDispatch();
+  //const { userId } = useParams();
 
   const handleLogout=()=>{
     dispatch(logout(user.id));
@@ -60,7 +61,7 @@ const Dashboard = ({ id }) => {
                           Statistics
                         </Link>
                         <Link
-                          to= {`/all`}
+                          to= {`/all/${user.id}`}
                           className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-orange-400 hover:text-white rounded-md transition duration-150"
                         >
                           All Annonces
@@ -75,9 +76,9 @@ const Dashboard = ({ id }) => {
                       </div>
 
                       :
-                      <div>
+                      <div className="flex flex-col space-y-2">
                         <Link
-                          to= {`/all`}
+                          to= {`/all/${user.id}`}
                           className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-orange-400 hover:text-white rounded-md transition duration-150"
                         >
                           All Annonces

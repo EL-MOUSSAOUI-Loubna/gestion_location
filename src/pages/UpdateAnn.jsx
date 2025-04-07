@@ -24,6 +24,16 @@ const UpdateAnn = () => {
 	const [selectedPosition, setSelectedPosition] = useState(annonce.selectedPosition || null);
 	const [errMsg, setErrMsg] = useState('');
 
+useEffect(() => {
+    if (annonce) {
+        setPhotos(annonce.photos || []);
+        setTitle(annonce.title || '');
+        setDescription(annonce.description || '');
+        setPrice(annonce.price || '');
+        setCity(annonce.city || '');
+        setSelectedPosition(annonce.selectedPosition || null);
+    }
+}, [annonce]);
 
 
 	useEffect(() => {
@@ -106,7 +116,7 @@ const UpdateAnn = () => {
 									id='city'
 									className="px-2 py-3 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
 									onChange={(e) => setCity(e.target.value)}
-									value={annonce.city}
+									value={city}
 								>
 									<option>-- Select a city --</option>
 									{cities.map((city, index) => (
@@ -133,7 +143,7 @@ const UpdateAnn = () => {
 									placeholder="Give your annonce a title"
 									className="px-2 py-3 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
 									onChange={(e) => setTitle(e.target.value)}
-									value={annonce.title}
+									value={title}
 								/>
 							</div>
 							<div className='w-full mb-3'>
@@ -143,7 +153,7 @@ const UpdateAnn = () => {
 									placeholder="Enter a description"
 									className="px-2 py-3 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
 									onChange={(e) => setDescription(e.target.value)}
-									value={annonce.description}
+									value={description}
 								></textarea>
 							</div>
 							<div className='w-full mb-3'>
@@ -156,7 +166,7 @@ const UpdateAnn = () => {
 									placeholder="Enter the price"
 									className="px-2 py-3 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
 									onChange={(e) => setPrice(e.target.value)}
-									value={annonce.price}
+									value={price}
 								/>
 							</div>
 							{/* UPLAOD PHOTOS */}

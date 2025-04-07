@@ -23,7 +23,7 @@ createRoot(document.getElementById('root')).render(
   
     <Provider store= {store}>
       <BrowserRouter>
-        <App />
+        <Home />
       </BrowserRouter>
     </Provider>
   

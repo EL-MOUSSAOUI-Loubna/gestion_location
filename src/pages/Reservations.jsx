@@ -13,6 +13,8 @@ const Reservations = ({ closeModal }) => {
   const handleAccept = (idRes, idAnn, idUser) => {
     const resDone = {idRes, idAnn, idUser};
     dispatch(acceptRes(resDone))
+    console.log(resDone);
+    
     alert(`Reservation accepted!`);
   };
 
@@ -42,7 +44,7 @@ const Reservations = ({ closeModal }) => {
       <div className="mt-6">
         {penReservations.length > 0 ? (
           <ul className="space-y-4">
-            {pendingRes.map((reservation) => (
+            {penReservations.map((reservation) => (
               <li
                 key={reservation.id}
                 className="p-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow"

@@ -13,17 +13,23 @@ const ProductDetails = () => {
   const userLogged = useSelector(state => state.loggedInUser);
   const annonces = useSelector((state) => state.annonces);
   const annonce = annonces.find(ann => ann.id == idAnn);
+  //console.log('idann : ', idAnn);
+  //console.log('annonce : ', annonce);
+
+  
 
   const idUser = userLogged.id;
   const [currentImage, setCurrentImage] = useState(0);
 
-  const idAnnOfUser = userLogged.idAnn.find(ann => ann.idAnn == idAnn);
+  const idAnnOfUser = userLogged.idAnn.find(ann => ann == idAnn);
+  console.log('idAnnOfUser : ', idAnnOfUser);
+  
 
   if (!annonce) {
     return (
       <div className="py-8 px-4 max-w-7xl mx-auto">
         <div className="h-[90vh] flex items-center justify-center bg-gray-100 rounded-lg shadow-md">
-          <p className="text-2xl font-bold text-gray-700">Announcement not found!</p>
+          <p className="text-2xl font-bold text-gray-700">Annoncet not found!</p>
         </div>
       </div>
     );
@@ -45,6 +51,7 @@ const ProductDetails = () => {
   const handleReserve = () => {
     const newReserve = { idAnn, idUser };
     dispatch(reserveAnn(newReserve));
+    alert(`Reservation done!`);
   }
   
 
@@ -178,7 +185,7 @@ const ProductDetails = () => {
                 onClick={()=> {
                   alert("Annonce marked as unavailable !");
                   setUnavailableOpen(false);
-                  dispatch(deleteAnn(idAnn));
+                  dispatch(deleteAnn(idAnnOfUser));
                   navigate("/");}}
               >
                 Yes, Mark Unavailable
@@ -206,7 +213,7 @@ const ProductDetails = () => {
                 onClick={()=> {
                   alert("Annonce deleted !");
                   setUnavailableOpen(false);
-                  dispatch(deleteAnn(idAnn));
+                  dispatch(deleteAnn(idAnnOfUser));
                   navigate("/");}}
               >
                 Delete

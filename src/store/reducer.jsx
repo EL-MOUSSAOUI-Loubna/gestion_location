@@ -16,6 +16,7 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
+
     switch (action.type) {
 
         case SIGNUP_USER:
@@ -33,7 +34,7 @@ const reducer = (state = initialState, action) => {
             }
 
         case LOGIN_USER:
-            const user = state.allUsers.find(user => user.id === action.payload);
+            const user = state.allUsers.find(user => user.id == action.payload);
             return {
                 ...state,
                 loggedInUser:
@@ -59,7 +60,19 @@ const reducer = (state = initialState, action) => {
         case ADD_RENT:
             return {
                 ...state,
-                pendingAnnonces: [...state.pendingAnnonces, action.payload]
+                pendingAnnonces: [...state.pendingAnnonces, {
+                    id: state.pendingAnnonces.length + 1,
+                    ...action.payload
+                }],
+                allUsers: state.allUsers.map(user => {
+                    if (user.id === state.loggedInUser.id) {
+                        return {
+                            ...user,
+                            idAnn: [...user.idAnn, state.pendingAnnonces.length + 1]
+                        }
+                    }
+                    return user;
+                })
             }
 
         case DELETE_ANN:
@@ -70,18 +83,22 @@ const reducer = (state = initialState, action) => {
             }
 
         case RESERVE_ANN:
+            const reserver = state.allUsers.find(user => user.id == action.payload.idUser);
             return {
                 ...state,
                 pendingRes: [...state.pendingRes,
                 {
                     id: state.pendingRes.length + 1,
-                    ...action.payload
+                    firstName: reserver.firstName,
+                    lastName: reserver.lastName,
+                    city: reserver.city,
+                    ...action.payload,
                 }]
             }
 
         case ACCEPT_RES:
-            state.pendingRes.filter(res => res.id !== action.payload.idRes)
-            const acceptedReservation = state.pendingRes.find(res => res.id === action.payload.idRes);
+            const acceptedReservation = state.pendingRes.find(res => res.id == action.payload.idRes);
+            //state.pendingRes.filter(res => res.id !== action.payload.idRes)
             return { ...state,
                 pendingRes: state.pendingRes.filter(
                   (res) => res.id !== action.payload.idRes ),
@@ -90,33 +107,22 @@ const reducer = (state = initialState, action) => {
         
 
         case REJECT_RES:
-            return {
-                ...state,
-                pendingRes: state.pendingRes.filter((res) => res.id !== action.payload.idRes
-                )
+            return { ...state,
+                pendingRes: state.pendingRes.filter(
+                  (res) => res.id !== action.payload),
             };
 
         case UPDATE_ANN:
-            const annonceToUpdate = state.annonces.find(ann => ann.id == action.payload.idAnn)
-            if (!annonceToUpdate) {
-                return state;
+            
+            return {
+                ...state,
+                annonces: state.annonces.map(ann => 
+                    ann.id == action.payload.idAnn ? { ...ann, ...action.payload } : ann
+                )
             }
-            const updatedAnnonce = {
-                ...annonceToUpdate,
-                title: action.payload.title,
-                description: action.payload.description,
-                price: action.payload.price,
-                city: action.payload.city,
-                photos: action.payload.photos,
-                selectedPosition: action.payload.selectedPosition,
-            };
-            const updatedAnnonces = state.annonces.map((ann) =>
-                ann.id === action.payload.idAnn ? updatedAnnonce : ann
-            );
-            return { ...state, annonces: updatedAnnonces };
 
         case ACCEPT_ANN:
-            const acceptedAnnonce = state.pendingAnnonces.find(ann => ann.id === action.payload
+            const acceptedAnnonce = state.pendingAnnonces.find(ann => ann.id == action.payload
               );
             return { ...state,
                 pendingAnnonces: state.pendingAnnonces.filter(

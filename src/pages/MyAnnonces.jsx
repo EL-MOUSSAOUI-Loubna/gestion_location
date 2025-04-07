@@ -8,7 +8,7 @@ const MyAnnonces = () => {
     const user = useSelector(state => state.loggedInUser);
     const navigate = useNavigate();
 
-    const userAnnonces = annonces.filter(annonce => user.idAnn.includes(annonce.id));
+    const userAnnonces = annonces.filter(annonce => user.idAnn.includes(parseInt(annonce.id)));
 
     return (
         <div>
@@ -35,7 +35,7 @@ const MyAnnonces = () => {
                                 <p className="text-green-600 font-bold text-lg mt-2">{ann.price} DH / month</p>
                                 <div className="flex flex-row-md items-center mt-8 justify-between">
                                     <button className="bg-orange-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-orange-600 hover:scale-105 transition-transform"
-                                    onClick={() => { navigate(`/details/${index+1}`) }}>
+                                    onClick={() => { (`/details/${ann.id}`) }}>
                                         See Details
                                     </button>
                                     <span className="bg-blue-100 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full group-hover:bg-blue-600 group-hover:text-white transition">

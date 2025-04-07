@@ -3,16 +3,20 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCities, addRent } from '../actions/actions';
 import TestMap from './TestMap';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import Home from './Home';
 
 
 export default function AddRent() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const cities = useSelector(state => state.cities || []);
-    //const annonces = useSelector(state => state.annonces || []);
-    const idUser = useParams();
-    //console.log("Cities from Redux:", cities);
+    const loggedInUser = useSelector(state => state.loggedInUser || []);
+    const userId  = loggedInUser.id;
+    //const {idUser} = useParams();
+    //console.log("id user:", idUser);
+    //console.log("user id:", userId);
+
 
 
     //const [isOpen, setIsOpen] = useState(false);
@@ -91,10 +95,16 @@ export default function AddRent() {
             return;
         }
         setErrMsg('');
-        const newRent = { title, description, price, city, photos, selectedPosition, idUser };
+        const newRent = { title, description, price, city, photos, selectedPosition, userId };
         dispatch(addRent(newRent));
         alert('Rent added successfully!');
-
+        setTitle('');
+        setDescription('');
+        setPrice('');
+        setCity('');
+        setPhotos([]);
+        setSelectedPosition(null);
+        //navigate(`/all/${idUser}`);
     }
 
 
@@ -115,6 +125,7 @@ export default function AddRent() {
                             <div className=''>
                                 <label htmlFor='city' className='block text-sm font-medium text-gray-700'>City<span className='text-red-500 ml-2'>*</span></label>
                                 <select
+                                value={city}
                                     id='city'
                                     className="px-2 py-3 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
                                     onChange={(e) => setCity(e.target.value)}
@@ -138,7 +149,7 @@ export default function AddRent() {
                         <div className='lg:w-1/2 w-full '>
                             <div className='w-full mb-3'>
                                 <label htmlFor='title' className='block text-sm font-medium text-gray-700'>Title<span className='text-red-500 ml-2'>*</span></label>
-                                <input 
+                                <input value={title}
                                     id='title'
                                     type="text"
                                     placeholder="Give your annonce a title"
@@ -148,7 +159,7 @@ export default function AddRent() {
                             </div>
                             <div className='w-full mb-3'>
                                 <label htmlFor='description' className='block text-sm font-medium text-gray-700'>Description<span className='text-red-500 ml-2'>*</span></label>
-                                <textarea
+                                <textarea value={description}
                                     id='description'
                                     placeholder="Enter a description"
                                     className="px-2 py-3 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
@@ -157,7 +168,7 @@ export default function AddRent() {
                             </div>
                             <div className='w-full mb-3'>
                                 <label htmlFor='price' className='block text-sm font-medium text-gray-700'>Price<span className='text-red-500 ml-2'>*</span></label>
-                                <input 
+                                <input value={price}
                                     id='price'
                                     type="number"
                                     step="0.01"

@@ -13,6 +13,7 @@ const ManageAnnonces = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const pendingAnnonces = useSelector((state) => state.pendingAnnonces);
+  console.log(pendingAnnonces);
   //const user = useSelector(state=> state.loggedInUser)
   //const idUser = user.id;
   const [confRejectAnnOpen, setConfRejectAnnOpen] = useState(false);
@@ -34,7 +35,7 @@ const ManageAnnonces = () => {
       <h1 className='text-2xl text-green-700 mb-4 font-bold text-center underline'>Manage my annonces</h1>
       <div className="flex flex-col md:flex-row gap-5 rounded-lg">
         {pendingAnnonces && pendingAnnonces.length > 0 ? (
-          pendingAnnonces.map((ann, index) => (
+          pendingAnnonces.map((ann, index) => ( 
             <div key={index} className="relative group bg-white h-[350px] w-[260px] shadow-md rounded-lg overflow-hidden hover:scale-105 hover:shadow-2xl transition-transform duration-300 ease-out">
               {ann.photos && ann.photos.length > 0 && ann.photos[0] ? (
                 <img

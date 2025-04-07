@@ -26,7 +26,7 @@ const SignUp = () => {
     const [disableBtn, setDisableBtn] = useState(false);
 
     useEffect(() => {
-        dispatch(fetchCities);
+        dispatch(fetchCities());
     }, [dispatch]);
 
     const handleEmail = (e) => {
