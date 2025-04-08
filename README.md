@@ -1,4 +1,4 @@
-This is a simple house renting project that I'm proud of.
+This is a simple rental management project that I'm proud of.
 
 it is the first time i create a project (actually a mini project) in a small duration (10 days i think ?), where i worked with new features (maps and localstorage), all while keeping up with my studies and exams.
 
